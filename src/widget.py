@@ -11,11 +11,7 @@ def mask_account_card(account_info: str) -> str:
     :param account_info: Строка с типом и номером карты или счета.
     :return: Строка с замаскированным номером.
     """
-    if (
-        "Visa" in account_info
-        or "Maestro" in account_info
-        or "MasterCard" in account_info
-    ):
+    if "Visa" in account_info or "Maestro" in account_info or "MasterCard" in account_info:
         return mask_card_number(account_info)
     elif "Счет" in account_info:
         return mask_account_number(account_info)
