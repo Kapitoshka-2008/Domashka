@@ -1,7 +1,7 @@
-account_number = input()
-# принимает номер аккаунта пользователя
-card_number = input()
-# принимает номер карточки
+# account_number = input()
+# # принимает номер аккаунта пользователя
+# card_number = input()
+# # принимает номер карточки
 
 
 def mask_card_number(card_number: str) -> str:
@@ -24,5 +24,5 @@ def mask_account_number(account_number: str) -> str:
 
 
 # выводим результат
-print(mask_card_number(card_number))
-print(mask_account_number(account_number))
+# print(mask_card_number(card_number))
+# print(mask_account_number(account_number))
