@@ -1,0 +1,17 @@
+[
+    {
+        "amount": 100.0,
+        "currency": "RUB",
+        "description": "Покупка продуктов"
+    },
+    {
+        "amount": 50.0,
+        "currency": "USD",
+        "description": "Оплата подписки"
+    },
+    {
+        "amount": 75.0,
+        "currency": "EUR",
+        "description": "Покупка книг"
+    }
+] 
