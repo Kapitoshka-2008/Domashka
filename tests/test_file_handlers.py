@@ -1,22 +1,7 @@
 import pytest
-import json
 import csv
 from pathlib import Path
-from openpyxl import Workbook
-from src.utils import load_transactions
-
-
-@pytest.fixture
-def sample_json_data(tmp_path):
-    """Создает тестовый JSON файл с транзакциями"""
-    data = [
-        {"date": "2024-03-20", "amount": "100.0", "currency": "RUB", "description": "Покупка"},
-        {"date": "2024-03-21", "amount": "200.0", "currency": "USD", "description": "Продажа"}
-    ]
-    file_path = tmp_path / "test_transactions.json"
-    with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f)
-    return str(file_path)
+from src.file_handlers import read_csv_file, read_excel_file, read_transactions
 
 @pytest.fixture
 def sample_csv_data(tmp_path):
@@ -35,6 +20,7 @@ def sample_csv_data(tmp_path):
 @pytest.fixture
 def sample_excel_data(tmp_path):
     """Создает тестовый Excel файл с транзакциями"""
+    from openpyxl import Workbook
     data = [
         {"date": "2024-03-20", "amount": "100.0", "currency": "RUB", "description": "Покупка"},
         {"date": "2024-03-21", "amount": "200.0", "currency": "USD", "description": "Продажа"}
@@ -55,42 +41,40 @@ def sample_excel_data(tmp_path):
     wb.save(file_path)
     return str(file_path)
 
-def test_load_transactions_json(sample_json_data):
-    """Тест загрузки транзакций из JSON файла"""
-    transactions = load_transactions(sample_json_data)
+def test_read_csv_file(sample_csv_data):
+    """Тест чтения CSV файла"""
+    transactions = read_csv_file(sample_csv_data)
     assert len(transactions) == 2
     assert transactions[0]['amount'] == '100.0'
     assert transactions[1]['currency'] == 'USD'
 
-def test_load_transactions_csv(sample_csv_data):
-    """Тест загрузки транзакций из CSV файла"""
-    transactions = load_transactions(sample_csv_data)
+def test_read_excel_file(sample_excel_data):
+    """Тест чтения Excel файла"""
+    transactions = read_excel_file(sample_excel_data)
     assert len(transactions) == 2
     assert transactions[0]['amount'] == '100.0'
     assert transactions[1]['currency'] == 'USD'
 
-def test_load_transactions_excel(sample_excel_data):
-    """Тест загрузки транзакций из Excel файла"""
-    transactions = load_transactions(sample_excel_data)
+def test_read_transactions_csv(sample_csv_data):
+    """Тест функции read_transactions для CSV файла"""
+    transactions = read_transactions(sample_csv_data)
     assert len(transactions) == 2
     assert transactions[0]['amount'] == '100.0'
-    assert transactions[1]['currency'] == 'USD'
 
-def test_load_transactions_invalid_json(tmp_path):
-    """Тест загрузки некорректного JSON файла"""
-    file_path = tmp_path / "invalid.json"
-    file_path.write_text("invalid json")
-    transactions = load_transactions(str(file_path))
-    assert transactions == []
+def test_read_transactions_excel(sample_excel_data):
+    """Тест функции read_transactions для Excel файла"""
+    transactions = read_transactions(sample_excel_data)
+    assert len(transactions) == 2
+    assert transactions[0]['amount'] == '100.0'
 
-def test_load_transactions_nonexistent_file():
-    """Тест загрузки несуществующего файла"""
-    transactions = load_transactions("nonexistent_file.json")
-    assert transactions == []
+def test_read_transactions_invalid_file():
+    """Тест обработки несуществующего файла"""
+    with pytest.raises(FileNotFoundError):
+        read_transactions("nonexistent_file.csv")
 
-def test_load_transactions_unsupported_format(tmp_path):
-    """Тест загрузки файла неподдерживаемого формата"""
+def test_read_transactions_unsupported_format(tmp_path):
+    """Тест обработки неподдерживаемого формата файла"""
     file_path = tmp_path / "test.txt"
     file_path.write_text("test data")
-    transactions = load_transactions(str(file_path))
-    assert transactions == [] 
+    with pytest.raises(ValueError):
+        read_transactions(str(file_path)) 
