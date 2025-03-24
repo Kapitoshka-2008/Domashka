@@ -1,0 +1,15 @@
+2025-03-24 12:09:32 - src.file_handlers - INFO - Начало чтения CSV файла: C:\Users\olegm\AppData\Local\Temp\pytest-of-olegm\pytest-9\test_load_transactions_csv0\test_transactions.csv
+2025-03-24 12:09:32 - src.file_handlers - INFO - Успешно прочитано 2 транзакций из CSV файла
+2025-03-24 12:09:32 - src.file_handlers - INFO - Начало чтения Excel файла: C:\Users\olegm\AppData\Local\Temp\pytest-of-olegm\pytest-9\test_load_transactions_excel0\test_transactions.xlsx
+2025-03-24 12:09:32 - src.file_handlers - INFO - Успешно прочитано 2 транзакций из Excel файла
+2025-03-24 12:09:32 - src.file_handlers - ERROR - Неподдерживаемый формат файла: .txt
+2025-03-24 12:09:32 - src.file_handlers - INFO - Начало чтения CSV файла: C:\Users\olegm\AppData\Local\Temp\pytest-of-olegm\pytest-9\test_read_csv_file0\test_transactions.csv
+2025-03-24 12:09:32 - src.file_handlers - INFO - Успешно прочитано 2 транзакций из CSV файла
+2025-03-24 12:09:32 - src.file_handlers - INFO - Начало чтения Excel файла: C:\Users\olegm\AppData\Local\Temp\pytest-of-olegm\pytest-9\test_read_excel_file0\test_transactions.xlsx
+2025-03-24 12:09:32 - src.file_handlers - INFO - Успешно прочитано 2 транзакций из Excel файла
+2025-03-24 12:09:32 - src.file_handlers - INFO - Начало чтения CSV файла: C:\Users\olegm\AppData\Local\Temp\pytest-of-olegm\pytest-9\test_read_transactions_csv0\test_transactions.csv
+2025-03-24 12:09:32 - src.file_handlers - INFO - Успешно прочитано 2 транзакций из CSV файла
+2025-03-24 12:09:32 - src.file_handlers - INFO - Начало чтения Excel файла: C:\Users\olegm\AppData\Local\Temp\pytest-of-olegm\pytest-9\test_read_transactions_excel0\test_transactions.xlsx
+2025-03-24 12:09:32 - src.file_handlers - INFO - Успешно прочитано 2 транзакций из Excel файла
+2025-03-24 12:09:32 - src.file_handlers - ERROR - Файл не найден: nonexistent_file.csv
+2025-03-24 12:09:32 - src.file_handlers - ERROR - Неподдерживаемый формат файла: .txt

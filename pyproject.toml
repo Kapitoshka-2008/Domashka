@@ -1,5 +1,5 @@
 [project]
-name = "pythonproject3"
+name = "pythonproject33"
 version = "0.1.0"
 description = ""
 authors = [
@@ -20,6 +20,10 @@ mypy = "^1.14.1"
 flake8 = "^7.1.1"
 isort = "^6.0.0"
 black = "^24.10.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
 
 [tool.black]
 # Максимальная длина строки
