@@ -62,9 +62,64 @@ def display_menu() -> None:
     print("6. Показать все транзакции")
     print("0. Выход")
 
+def get_status_choice() -> str:
+    """
+    Получает выбор статуса от пользователя.
+    
+    Returns:
+        Выбранный статус
+    """
+    valid_statuses = ['COMPLETED', 'PENDING', 'CANCELLED']
+    while True:
+        print("\nДоступные статусы:")
+        for i, status in enumerate(valid_statuses, 1):
+            print(f"{i}. {status}")
+        
+        try:
+            choice = int(input("\nВыберите номер статуса: "))
+            if 1 <= choice <= len(valid_statuses):
+                return valid_statuses[choice - 1]
+            print("Неверный номер статуса. Попробуйте снова.")
+        except ValueError:
+            print("Пожалуйста, введите число.")
+
+def ask_for_additional_filtering(transactions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Спрашивает пользователя о дополнительной фильтрации.
+    
+    Args:
+        transactions: Список транзакций для фильтрации
+        
+    Returns:
+        Отфильтрованный список транзакций
+    """
+    while True:
+        print("\nХотите применить дополнительную фильтрацию?")
+        print("1. Фильтр по валюте")
+        print("2. Сортировка по дате")
+        print("3. Нет, показать результаты")
+        
+        choice = input("\nВыберите действие (1-3): ")
+        
+        if choice == '1':
+            currency = input("\nВведите код валюты (по умолчанию RUB): ").strip().upper() or 'RUB'
+            transactions = filter_by_currency(transactions, currency)
+        elif choice == '2':
+            reverse = input("\nСортировать по убыванию? (да/нет): ").lower() == 'да'
+            transactions = sort_by_date(transactions, reverse)
+        elif choice == '3':
+            break
+        else:
+            print("Неверный выбор. Попробуйте снова.")
+    
+    return transactions
+
 def main() -> None:
     """Основная функция программы."""
     try:
+        print("\nДобро пожаловать в программу обработки финансовых транзакций!")
+        print("=" * 50)
+        
         # Загрузка транзакций
         transactions = load_transactions('data/transactions.json')
         
@@ -73,12 +128,13 @@ def main() -> None:
             choice = input("\nВыберите действие (0-6): ")
             
             if choice == '0':
-                print("\nПрограмма завершена.")
+                print("\nСпасибо за использование программы!")
                 break
                 
             elif choice == '1':
                 search_string = input("\nВведите регулярное выражение для поиска: ")
                 filtered = filter_by_description(transactions, search_string)
+                filtered = ask_for_additional_filtering(filtered)
                 display_transactions(filtered)
                 
             elif choice == '2':
@@ -88,24 +144,36 @@ def main() -> None:
                 print("\nКоличество транзакций по категориям:")
                 for category, count in result.items():
                     print(f"{category}: {count}")
+                
+                # Спрашиваем, хочет ли пользователь увидеть детали
+                if input("\nХотите увидеть детали транзакций? (да/нет): ").lower() == 'да':
+                    filtered = []
+                    for category in categories:
+                        filtered.extend(filter_by_description(transactions, category.lower()))
+                    filtered = ask_for_additional_filtering(filtered)
+                    display_transactions(filtered)
                     
             elif choice == '3':
-                status = input("\nВведите статус для фильтрации: ")
+                status = get_status_choice()
                 filtered = filter_by_status(transactions, status)
+                filtered = ask_for_additional_filtering(filtered)
                 display_transactions(filtered)
                 
             elif choice == '4':
                 reverse = input("\nСортировать по убыванию? (да/нет): ").lower() == 'да'
                 sorted_transactions = sort_by_date(transactions, reverse)
+                sorted_transactions = ask_for_additional_filtering(sorted_transactions)
                 display_transactions(sorted_transactions)
                 
             elif choice == '5':
-                currency = input("\nВведите код валюты (по умолчанию RUB): ").strip() or 'RUB'
+                currency = input("\nВведите код валюты (по умолчанию RUB): ").strip().upper() or 'RUB'
                 filtered = filter_by_currency(transactions, currency)
+                filtered = ask_for_additional_filtering(filtered)
                 display_transactions(filtered)
                 
             elif choice == '6':
-                display_transactions(transactions)
+                filtered = ask_for_additional_filtering(transactions)
+                display_transactions(filtered)
                 
             else:
                 print("\nНеверный выбор. Попробуйте снова.")

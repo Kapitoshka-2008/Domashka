@@ -1,6 +1,7 @@
 import re
 from typing import List, Dict, Any
 from datetime import datetime
+from collections import Counter
 from .logger import setup_logger
 
 logger = setup_logger(__name__)
@@ -31,7 +32,7 @@ def filter_by_description(transactions: List[Dict[str, Any]], search_string: str
 
 def count_by_category(transactions: List[Dict[str, Any]], categories: List[str]) -> Dict[str, int]:
     """
-    Подсчитывает количество транзакций по категориям.
+    Подсчитывает количество транзакций по категориям с использованием Counter.
     
     Args:
         transactions: Список транзакций
@@ -42,14 +43,23 @@ def count_by_category(transactions: List[Dict[str, Any]], categories: List[str])
     """
     try:
         logger.info(f"Начало подсчета транзакций по категориям: {categories}")
-        result = {category: 0 for category in categories}
         
+        # Создаем список категорий для каждой транзакции
+        transaction_categories = []
         for transaction in transactions:
             description = transaction.get('description', '').lower()
             for category in categories:
                 if category.lower() in description:
-                    result[category] += 1
+                    transaction_categories.append(category)
                     break
+        
+        # Используем Counter для подсчета
+        result = dict(Counter(transaction_categories))
+        
+        # Добавляем категории с нулевым количеством
+        for category in categories:
+            if category not in result:
+                result[category] = 0
         
         logger.info(f"Подсчет завершен: {result}")
         return result
